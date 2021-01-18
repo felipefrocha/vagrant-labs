@@ -1,0 +1,69 @@
+---
+- hosts: all
+  become: yes
+  pre_tasks:
+    - name: Update repositories
+      shell: | 
+        apt update
+        apt upgrade -y
+        apt autoremove -y
+  tasks:
+    - name: Set a hostname
+      hostname:
+        name: "{{ hostname }}"
+
+    - name: add docker requirements
+      apt:
+        pkg:
+          - apt-transport-https
+          - ca-certificates 
+          - curl 
+          - gnupg-agent 
+          - software-properties-common
+        state: present
+
+    - name: add docker  apt signing key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: add docker repository
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable
+        state: present
+    
+    - name: install docker latest version
+      apt:
+        pkg:
+        - docker-ce 
+        - docker-ce-cli 
+        - containerd.io
+        state: latest
+
+    - name: add group and user for docker
+      user:
+        name: vagrant
+        groups: docker
+        append: yes
+        
+    - name: Install prerequisites for docker-compose
+      apt:
+        name: ['python3-pip', 'python3-setuptools', 'virtualenv']
+
+    - name: Install docker-compose
+      pip:
+        name: docker-compose
+
+    - name: ensure ntpd is at the latest version
+      apt: 
+        name: ntp
+        state: latest
+        update_cache: yes
+      notify:
+      - restart ntp
+    
+  handlers:
+    - name: restart ntp
+      service: 
+        name: ntp
+        state: restarted
