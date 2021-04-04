@@ -11,6 +11,7 @@ Vagrant.configure("2") do |config|
   
   config.vm.box         = "hashicorp/bionic64"
   config.vm.hostname    = "shounen"
+  
   config.vm.define "base"
   config.vm.network "public_network",
     use_dhcp_assigned_default_route: true
