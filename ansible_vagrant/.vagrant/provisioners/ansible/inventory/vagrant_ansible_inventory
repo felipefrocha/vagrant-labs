@@ -2,3 +2,4 @@
 
 lab2 ansible_host=127.0.0.1 ansible_port=2200 ansible_user='vagrant' ansible_ssh_private_key_file='/home/rocha/Documents/projects/pessoal/hashicorp/vagrant/ansible_vagrant/.vagrant/machines/lab2/virtualbox/private_key' hostname=lab2
 lab1 ansible_host=127.0.0.1 ansible_port=2222 ansible_user='vagrant' ansible_ssh_private_key_file='/home/rocha/Documents/projects/pessoal/hashicorp/vagrant/ansible_vagrant/.vagrant/machines/lab1/virtualbox/private_key' hostname=lab1
+lab3 ansible_host=127.0.0.1 ansible_port=2201 ansible_user='vagrant' ansible_ssh_private_key_file='/home/rocha/Documents/projects/pessoal/hashicorp/vagrant/ansible_vagrant/.vagrant/machines/lab3/virtualbox/private_key' hostname=lab3
