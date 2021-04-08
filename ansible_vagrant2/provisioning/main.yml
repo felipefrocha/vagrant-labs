@@ -4,7 +4,6 @@
   roles:
   - config_ubuntu
   - config_mick8s
-# - config_docker
 
 - hosts: master_nodes
   become: yes
@@ -13,7 +12,7 @@
     join_token: teste
   tasks:
     - name: Get token join master
-      shell: microk8s add-node -l 600 | microk8s add-node | grep 192 | cut -d' ' -f 4
+      shell: microk8s add-node -l 600 | grep 192 | cut -d' ' -f 4
       register: join_token 
 
     - name: Set token
@@ -43,4 +42,7 @@
       shell: "microk8s join {{ hostvars['master_nodes']['join_token'] }}"
       when: hostvars['master_nodes']['join_token'] is defined
 
-  
+- hosts: mac1
+  become: yes
+  roles:
+    - config_micmod

@@ -12,7 +12,9 @@
       - curl 
       - gnupg-agent 
       - software-properties-common
+      - wget
     state: present
+    update_cache: yes
 
 - name: Install prerequisites 
   apt:
@@ -32,3 +34,13 @@
     update_cache: yes
   notify:
   - restart ntp
+
+- name: Upgrade the OS (apt-get dist-upgrade)
+  apt:
+    upgrade: full
+
+- name: Set authorized key taken from file
+  ansible.posix.authorized_key:
+    user: vagrant
+    state: present
+    key: "{{ lookup('file', '/home/rocha/.ssh/aws_educate.pub') }}"

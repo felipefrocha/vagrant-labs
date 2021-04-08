@@ -31,3 +31,12 @@
   when: k8s_dashboard|default(False)|bool == True
   args:
     executable: /bin/bash
+
+- name: Enable K8s Dashboard
+  shell: |
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    microk8s enable fluent
+  when: False
+  args:
+    executable: /bin/bash
