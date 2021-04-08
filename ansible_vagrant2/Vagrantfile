@@ -1,0 +1,51 @@
+Vagrant.configure("2") do |config|
+  config.vm.box         = "hashicorp/bionic64"
+  config.vm.box_check_update = true
+  N = 3
+  (1..N).each do |machine_id|
+    config.vm.define "machine#{machine_id}" do |machine|
+      machine.vm.hostname = "machine#{machine_id}"
+      machine.vm.network "public_network", ip: "192.168.15.#{70+machine_id}", bridge: "enp1s0"
+      # Define machine size
+      machine.vm.provider "virtualbox" do |vb|
+        vb.memory = "4096"
+      end
+      machine.vm.provision "shell", inline: <<-SHELL
+        export TZ="America/Sao_Paulo"
+        apt-get update && \
+        apt-get full-upgrade -q -y && \
+        apt-get install -q -y \
+          curl wget git python3 python3-pip jq htop && \
+        apt-get autoremove -y && apt-get clean && \
+        echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJkSjKVhN6FxOHwZEoIRRQQh+TvxYyKrgKIr2TmhpRJeIcBGEivMUSsU30WDPnkBhr8eDmzCCDa5MbZcqoYy5GEW4Doo0148iBztz+GYTuCUm1BCRQvc4hf8ogILkVHV4cnV+3UXGyBonVhJhVQap+SlT9cohuro09VYiesDL3qffVzXeT2daDWTMGH1y1VZNxrUpobZ7o6s+F6roVS8v8AQKVqeL9dMCK9Dam9R2Gb94fghlLuRoIPyJUY0FE6NxPsQY7ToakDn/mYHrKSKOhUb1hWRV12ncQMNppo7xT9GfgjMf4NA0ZwETmDJzGVmS8/iHLOUiOApsqd9UsSpVJ" >> /home/vagrant/.ssh/authorized_keys
+      SHELL
+
+      # Only execute once the Ansible provisioner,
+      # when all the machines are up and ready.
+      if machine_id == N
+        machine.vm.provision :ansible do |ansible|
+          # Disable default limit to connect to all the machines
+          ansible.limit = "all"
+          ansible.playbook = "provisioning/main.yml"
+          ansible.groups = {
+            "masters" => [],
+            "masters:children" => ["mac1","mac2","mac3"],
+            "master_nodes" => [],
+            "master_nodes:children" => ["mac1"],
+            "join_masters" => [],
+            "join_masters:children" => ["mac2","mac3"],
+            "workers" => [],
+            "all:children" => ["masters","workers"],
+            "all:vars" => {"ansible_python_interpreter" => "/usr/bin/python3", "user" => "vagrant"},
+            "mac1" => ["machine1"],
+            "mac2" => ["machine2"],
+            "mac3" => ["machine3"],
+            "mac1:vars" => {"hostname" => "master1"},
+            "mac2:vars" => {"hostname" => "master2"},
+            "mac3:vars" => {"hostname" => "master3"}
+          }
+        end
+      end
+    end
+  end
+end

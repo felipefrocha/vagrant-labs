@@ -1,0 +1,34 @@
+---
+# tasks file for config_ubuntu
+- name: Set a hostname
+  hostname:
+    name: "{{ hostname }}"
+
+- name: add docker requirements
+  apt:
+    pkg:
+      - apt-transport-https
+      - ca-certificates 
+      - curl 
+      - gnupg-agent 
+      - software-properties-common
+    state: present
+
+- name: Install prerequisites 
+  apt:
+    name: 
+    - python3-pip
+    - python3-setuptools
+    - virtualenv
+    state: present
+
+- name: Update pip
+  shell: pip3 install -U pip 
+
+- name: ensure ntpd is at the latest version
+  apt: 
+    name: ntp
+    state: latest
+    update_cache: yes
+  notify:
+  - restart ntp
