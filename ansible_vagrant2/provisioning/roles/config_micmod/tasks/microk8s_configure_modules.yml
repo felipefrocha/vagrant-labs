@@ -1,27 +1,20 @@
 ---
-- name: Enable dns
+- name: Enable Modules
   shell: |
     export LC_ALL=C.UTF-8
     export LANG=C.UTF-8
-    microk8s enable dns
+    microk8s enable {{ item }}
+  when: True
+  loop:
+    - dns
+    - ingress
+    - storage
+    - fluent
+    - prometheus
+    - rbac
   args:
     executable: /bin/bash
 
-- name: Enable ingress
-  shell: |
-    export LC_ALL=C.UTF-8
-    export LANG=C.UTF-8
-    microk8s enable ingress
-  args:
-    executable: /bin/bash
-
-- name: Enable storage
-  shell: |
-    export LC_ALL=C.UTF-8
-    export LANG=C.UTF-8
-    microk8s enable storage
-  args:
-    executable: /bin/bash
 
 - name: Enable K8s Dashboard
   shell: |
@@ -29,14 +22,5 @@
     export LANG=C.UTF-8
     microk8s enable dashboard
   when: k8s_dashboard|default(False)|bool == True
-  args:
-    executable: /bin/bash
-
-- name: Enable K8s Dashboard
-  shell: |
-    export LC_ALL=C.UTF-8
-    export LANG=C.UTF-8
-    microk8s enable fluent
-  when: False
   args:
     executable: /bin/bash

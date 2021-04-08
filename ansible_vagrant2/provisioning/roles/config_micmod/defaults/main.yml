@@ -1,2 +1,3 @@
 ---
 # defaults file for config_micmod
+k8s_dashboard: True
