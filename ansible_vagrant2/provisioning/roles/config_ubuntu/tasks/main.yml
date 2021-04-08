@@ -35,7 +35,7 @@
   notify:
   - restart ntp
 
-- name: Upgrade the OS (apt-get dist-upgrade)
+- name: Upgrade the OS (apt-get full-upgrade)
   apt:
     upgrade: full
 

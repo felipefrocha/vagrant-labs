@@ -1,68 +1,66 @@
 ---
-# - hosts: all
-#   become: yes
-#   roles:
-#   - config_ubuntu
-#   - config_mick8s
+- hosts: all
+  become: yes
+  roles:
+  - config_ubuntu
+  - config_mick8s
 
-# - hosts: master_nodes
-#   become: yes
-#   gather_facts: false
-#   vars: 
-#     join_token: teste
-#   tasks:
-#     - name: Get token join master
-#       shell: microk8s add-node -l 600 | grep 192 | cut -d' ' -f 4
-#       register: join_token 
+- hosts: master_nodes
+  become: yes
+  gather_facts: false
+  vars: 
+    join_token: teste
+  tasks:
+    - name: Get token join master
+      shell: microk8s add-node -l 600 | grep 192 | cut -d' ' -f 4
+      register: join_token 
 
-#     - name: Set token
-#       set_fact:
-#         join_token: "{{ join_token.stdout }}"
-#         cacheable: yes
+    - name: Set token
+      set_fact:
+        join_token: "{{ join_token.stdout }}"
+        cacheable: yes
 
-#     - name: Token
-#       debug: 
-#         var: join_token
+    - name: Token
+      debug: 
+        var: join_token
 
-#     - name: Register dummy host with variable   
-#       add_host:
-#         name: "master_nodes"
-#         join_token: "{{ join_token }}"
+    - name: Register dummy host with variable   
+      add_host:
+        name: "master_nodes"
+        join_token: "{{ join_token }}"
 
-#     - name: Cat config
-#       shell: microk8s config
-#       register: config
+    - name: Cat config
+      shell: microk8s config
+      register: config
     
-#     - name: Config
-#       local_action: 
-#         module: copy 
-#         content: "{{config.stdout}}" 
-#         dest: file
+    - name: Config
+      local_action: 
+        module: copy 
+        content: "{{config.stdout}}" 
+        dest: file
 
-# - hosts: join_masters
-#   become: yes
-#   gather_facts: false
-#   tasks:
-#     - name: Joining to the Cluster
-#       debug:
-#         var: hostvars['master_nodes']
+- hosts: join_masters
+  become: yes
+  gather_facts: false
+  tasks:
+    - name: Joining to the Cluster
+      debug:
+        var: hostvars['master_nodes']
 
-#     - name: Join to Cluster
-#       shell: "microk8s join {{ hostvars['master_nodes']['join_token'] }}"
-#       when: hostvars['master_nodes']['join_token'] is defined
+    - name: Join to Cluster
+      shell: "microk8s join {{ hostvars['master_nodes']['join_token'] }}"
+      when: hostvars['master_nodes']['join_token'] is defined
 
-
-# - hosts: masters
-#   become: yes
-#   gather_facts: false
-#   tasks:
-#   - name: Ensure the IP from LB is acceptble 
-#     ansible.builtin.lineinfile:
-#       path: /var/snap/microk8s/current/certs/csr.conf.template
-#       regexp: '^IP.100 = '
-#       insertafter: '^IP.2 '
-#       line: IP.100 = 192.168.15.50
-
+- hosts: masters
+  become: yes
+  gather_facts: false
+  tasks:
+  - name: Ensure the IP from LB is acceptble 
+    ansible.builtin.lineinfile:
+      path: /var/snap/microk8s/current/certs/csr.conf.template
+      regexp: '^IP.100 = '
+      insertafter: '^IP.2 '
+      line: IP.100 = 192.168.15.50
 
 - hosts: mac1
   become: yes

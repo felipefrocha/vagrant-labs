@@ -9,9 +9,9 @@
     - dns
     - ingress
     - storage
-    - fluent
-    - prometheus
-    - rbac
+    # - rbac
+    # - fluentd
+    # - prometheus
   args:
     executable: /bin/bash
 
