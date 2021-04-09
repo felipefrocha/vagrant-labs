@@ -22,11 +22,16 @@ setup: ## Install all requirements for your system
 	@pip3 install -U pip ansible molecule
 
 
-ansible_roles:
+clear: ## Removes all roles and VM's installed
+	@vagrant destroy -f
+	@rm -rf provisioning/roles/*
+
+
+ansible_roles: ## Install all required roles
 	@ansible-galaxy install --roles-path ./provisioning/roles -r provisioning/requirements.yml 
 
 
-vagrant: ## Create and provision all vagrant VMs
+vagrant: ansible_roles ## Create and provision all vagrant VMs
 	@vagrant up --parallel --provision
 
 
