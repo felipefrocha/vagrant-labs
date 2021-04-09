@@ -1,8 +1,0 @@
----
-# tasks file for config_micmod
-- name: Configure Microk8s Modules
-  import_tasks: microk8s_configure_modules.yml
-
-- name: Configure Microk8s ELK
-  import_tasks: microk8s_configure_elk.yml
-  when: False

@@ -1,0 +1,15 @@
+---
+- src: https://github.com/felipefrocha/ansible-role-ubuntu-update
+  version: main
+  scm: git
+  name: ubuntu_update
+
+- src: git@github.com:felipefrocha/ansible-role-microk8s-install.git
+  version: main
+  scm: git
+  name: microk8s_install
+  
+- src: git@github.com:felipefrocha/ansible-role-microk8s-modules.git
+  version: main
+  scm: git
+  name: microk8s_modules
