@@ -1,0 +1,6 @@
+---
+- src: https://github.com/felipefrocha/ansible-role-kubeadm-install
+  version: main
+  scm: git
+  name: kubeadm_install
+

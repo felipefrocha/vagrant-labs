@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+
+  nginx:
+    build:
+      context : ./
+      dockerfile: Dockerfile
+    ports:
+      - "6443:6443"
+    restart: always
+    networks: 
+      - k8s_api
+
+networks: 
+  k8s_api: {}
