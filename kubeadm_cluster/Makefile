@@ -36,7 +36,7 @@ vagrant: ansible_roles ## Create and provision all vagrant VMs
 
 
 docker_lb: ## Ups a load_balancer for the others
-	@docker-compose -f nginx/docker-compose.yml up --build
+	@docker-compose -f nginx/docker-compose.yml up --build -d
 
 
 vendor: ## vendor

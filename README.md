@@ -23,7 +23,9 @@ Any suggestion please feel free to contribute.
 
 **OS: Most of our applications will be done at Ubuntu or Debian like systems**
 * Linux systems - Ubuntu was used to develop every single workload, so once again feel free to add more
-* At least 8GB of RAM an 2-4 cores, this will assure that you can do almost everything of what I will present here
+* At least 8GB of RAM and 2-4 cores, this will assure that you can do almost everything of what I will present here
+
+To use this repo with kubeadm and all the goo
 
 ## Procedures
 If you wanna just play along check in every folder if there is a Makefile, if there is you can check what you can do by hit `make help`

@@ -1,0 +1,623 @@
+Starting galaxy role install process
+- extracting kubeadm_setup to /home/rocha/Documents/projects/pessoal/hashicorp/vagrant/kubeadm_cluster/provisioning/roles/kubeadm_setup
+- kubeadm_setup (main) was installed successfully
+- adding dependency: kubeadm_install (main)
+- extracting kubeadm_install to /home/rocha/Documents/projects/pessoal/hashicorp/vagrant/kubeadm_cluster/provisioning/roles/kubeadm_install
+- kubeadm_install (main) was installed successfully
+- adding dependency: ubuntu_update (main)
+- extracting ubuntu_update to /home/rocha/Documents/projects/pessoal/hashicorp/vagrant/kubeadm_cluster/provisioning/roles/ubuntu_update
+- ubuntu_update (main) was installed successfully
+Bringing machine 'machine1' up with 'virtualbox' provider...
+Bringing machine 'machine2' up with 'virtualbox' provider...
+Bringing machine 'machine3' up with 'virtualbox' provider...
+==> machine1: Importing base box 'generic/ubuntu2004'...
+[KProgress: 30%[KProgress: 40%[KProgress: 50%[KProgress: 60%[KProgress: 70%[KProgress: 80%[KProgress: 90%[K==> machine1: Matching MAC address for NAT networking...
+==> machine1: Checking if box 'generic/ubuntu2004' version '3.2.16' is up to date...
+==> machine1: Setting the name of the VM: kubeadm_cluster_machine1_1618453876990_50618
+==> machine1: Clearing any previously set network interfaces...
+==> machine1: Preparing network interfaces based on configuration...
+    machine1: Adapter 1: nat
+    machine1: Adapter 2: bridged
+==> machine1: Forwarding ports...
+    machine1: 22 (guest) => 2222 (host) (adapter 1)
+==> machine1: Running 'pre-boot' VM customizations...
+==> machine1: Booting VM...
+==> machine1: Waiting for machine to boot. This may take a few minutes...
+    machine1: SSH address: 127.0.0.1:2222
+    machine1: SSH username: vagrant
+    machine1: SSH auth method: private key
+    machine1: Warning: Connection reset. Retrying...
+    machine1: Warning: Remote connection disconnect. Retrying...
+    machine1: Warning: Connection reset. Retrying...
+    machine1: 
+    machine1: Vagrant insecure key detected. Vagrant will automatically replace
+    machine1: this with a newly generated keypair for better security.
+    machine1: 
+    machine1: Inserting generated public key within guest...
+    machine1: Removing insecure key from the guest if it's present...
+    machine1: Key inserted! Disconnecting and reconnecting using new SSH key...
+==> machine1: Machine booted and ready!
+==> machine1: Checking for guest additions in VM...
+==> machine1: Setting hostname...
+==> machine1: Configuring and enabling network interfaces...
+==> machine2: Importing base box 'generic/ubuntu2004'...
+[KProgress: 30%[KProgress: 40%[KProgress: 50%[KProgress: 60%[KProgress: 70%[KProgress: 80%[KProgress: 90%[K==> machine2: Matching MAC address for NAT networking...
+==> machine2: Checking if box 'generic/ubuntu2004' version '3.2.16' is up to date...
+==> machine2: Setting the name of the VM: kubeadm_cluster_machine2_1618453948753_57900
+==> machine2: Fixed port collision for 22 => 2222. Now on port 2200.
+==> machine2: Clearing any previously set network interfaces...
+==> machine2: Preparing network interfaces based on configuration...
+    machine2: Adapter 1: nat
+    machine2: Adapter 2: bridged
+==> machine2: Forwarding ports...
+    machine2: 22 (guest) => 2200 (host) (adapter 1)
+==> machine2: Running 'pre-boot' VM customizations...
+==> machine2: Booting VM...
+==> machine2: Waiting for machine to boot. This may take a few minutes...
+    machine2: SSH address: 127.0.0.1:2200
+    machine2: SSH username: vagrant
+    machine2: SSH auth method: private key
+    machine2: Warning: Connection reset. Retrying...
+    machine2: Warning: Remote connection disconnect. Retrying...
+    machine2: Warning: Connection reset. Retrying...
+    machine2: Warning: Remote connection disconnect. Retrying...
+    machine2: 
+    machine2: Vagrant insecure key detected. Vagrant will automatically replace
+    machine2: this with a newly generated keypair for better security.
+    machine2: 
+    machine2: Inserting generated public key within guest...
+    machine2: Removing insecure key from the guest if it's present...
+    machine2: Key inserted! Disconnecting and reconnecting using new SSH key...
+==> machine2: Machine booted and ready!
+==> machine2: Checking for guest additions in VM...
+==> machine2: Setting hostname...
+==> machine2: Configuring and enabling network interfaces...
+==> machine3: Importing base box 'generic/ubuntu2004'...
+[KProgress: 30%[KProgress: 40%[KProgress: 50%[KProgress: 60%[KProgress: 70%[KProgress: 80%[KProgress: 90%[K==> machine3: Matching MAC address for NAT networking...
+==> machine3: Checking if box 'generic/ubuntu2004' version '3.2.16' is up to date...
+==> machine3: Setting the name of the VM: kubeadm_cluster_machine3_1618454023531_13220
+==> machine3: Fixed port collision for 22 => 2222. Now on port 2201.
+==> machine3: Clearing any previously set network interfaces...
+==> machine3: Preparing network interfaces based on configuration...
+    machine3: Adapter 1: nat
+    machine3: Adapter 2: bridged
+==> machine3: Forwarding ports...
+    machine3: 22 (guest) => 2201 (host) (adapter 1)
+==> machine3: Running 'pre-boot' VM customizations...
+==> machine3: Booting VM...
+==> machine3: Waiting for machine to boot. This may take a few minutes...
+    machine3: SSH address: 127.0.0.1:2201
+    machine3: SSH username: vagrant
+    machine3: SSH auth method: private key
+    machine3: Warning: Connection reset. Retrying...
+    machine3: Warning: Remote connection disconnect. Retrying...
+    machine3: Warning: Connection reset. Retrying...
+    machine3: 
+    machine3: Vagrant insecure key detected. Vagrant will automatically replace
+    machine3: this with a newly generated keypair for better security.
+    machine3: 
+    machine3: Inserting generated public key within guest...
+    machine3: Removing insecure key from the guest if it's present...
+    machine3: Key inserted! Disconnecting and reconnecting using new SSH key...
+==> machine3: Machine booted and ready!
+==> machine3: Checking for guest additions in VM...
+==> machine3: Setting hostname...
+==> machine3: Configuring and enabling network interfaces...
+==> machine3: Running provisioner: ansible...
+    machine3: Running ansible-playbook...
+
+PLAY [all] *********************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [machine2]
+ok: [machine1]
+ok: [machine3]
+
+TASK [ubuntu_update : Set a hostname] ******************************************
+skipping: [machine1]
+skipping: [machine2]
+skipping: [machine3]
+
+TASK [ubuntu_update : Register current User] ***********************************
+ok: [machine1]
+ok: [machine2]
+ok: [machine3]
+
+TASK [ubuntu_update : Current User] ********************************************
+ok: [machine1] => {
+    "msg": "vagrant"
+}
+ok: [machine2] => {
+    "msg": "vagrant"
+}
+ok: [machine3] => {
+    "msg": "vagrant"
+}
+
+TASK [ubuntu_update : Install packages] ****************************************
+changed: [machine3]
+changed: [machine1]
+changed: [machine2]
+
+TASK [ubuntu_update : Installed packages] **************************************
+ok: [machine1] => {
+    "msg": [
+        "apt-transport-https",
+        "ca-certificates",
+        "curl",
+        "gnupg-agent",
+        "software-properties-common",
+        "wget",
+        "conntrack",
+        "selinux-utils",
+        "htop"
+    ]
+}
+ok: [machine2] => {
+    "msg": [
+        "apt-transport-https",
+        "ca-certificates",
+        "curl",
+        "gnupg-agent",
+        "software-properties-common",
+        "wget",
+        "conntrack",
+        "selinux-utils",
+        "htop"
+    ]
+}
+ok: [machine3] => {
+    "msg": [
+        "apt-transport-https",
+        "ca-certificates",
+        "curl",
+        "gnupg-agent",
+        "software-properties-common",
+        "wget",
+        "conntrack",
+        "selinux-utils",
+        "htop"
+    ]
+}
+
+TASK [ubuntu_update : Install Python3] *****************************************
+changed: [machine3]
+changed: [machine2]
+changed: [machine1]
+
+TASK [ubuntu_update : Installed Python packages] *******************************
+ok: [machine1] => {
+    "msg": [
+        "python3-pip",
+        "python3-setuptools",
+        "virtualenv"
+    ]
+}
+ok: [machine2] => {
+    "msg": [
+        "python3-pip",
+        "python3-setuptools",
+        "virtualenv"
+    ]
+}
+ok: [machine3] => {
+    "msg": [
+        "python3-pip",
+        "python3-setuptools",
+        "virtualenv"
+    ]
+}
+
+TASK [ubuntu_update : Install/upgrade Pip Packages] ****************************
+changed: [machine1]
+changed: [machine3]
+changed: [machine2]
+
+TASK [ubuntu_update : Installed Pip packages] **********************************
+ok: [machine1] => {
+    "msg": [
+        "pip",
+        "anisble"
+    ]
+}
+ok: [machine2] => {
+    "msg": [
+        "pip",
+        "anisble"
+    ]
+}
+ok: [machine3] => {
+    "msg": [
+        "pip",
+        "anisble"
+    ]
+}
+
+TASK [ubuntu_update : Ensure ntpd is at the latest version] ********************
+changed: [machine3]
+changed: [machine2]
+changed: [machine1]
+
+TASK [ubuntu_update : Upgrade the OS (apt-get full-upgrade)] *******************
+changed: [machine2]
+changed: [machine3]
+changed: [machine1]
+
+TASK [ubuntu_update : Set authorized key taken from file] **********************
+changed: [machine3]
+changed: [machine2]
+changed: [machine1]
+
+TASK [kubeadm_install : Install Kernel Modules] ********************************
+included: /home/rocha/Documents/projects/pessoal/hashicorp/vagrant/kubeadm_cluster/provisioning/roles/kubeadm_install/tasks/modprobe_config.yml for machine1, machine2, machine3
+
+TASK [kubeadm_install : Add the kernel modules] ********************************
+changed: [machine2] => (item=overlay)
+changed: [machine3] => (item=overlay)
+changed: [machine1] => (item=overlay)
+changed: [machine2] => (item=br_netfilter)
+changed: [machine3] => (item=br_netfilter)
+changed: [machine1] => (item=br_netfilter)
+
+TASK [kubeadm_install : Create file module conf] *******************************
+ok: [machine1]
+ok: [machine3]
+ok: [machine2]
+
+TASK [kubeadm_install : Ensure modules loads are in file] **********************
+changed: [machine2] => (item=overlay)
+changed: [machine1] => (item=overlay)
+changed: [machine3] => (item=overlay)
+changed: [machine2] => (item=br_netfilter)
+changed: [machine1] => (item=br_netfilter)
+changed: [machine3] => (item=br_netfilter)
+
+TASK [kubeadm_install : Create file sysctl.d config] ***************************
+ok: [machine1]
+ok: [machine3]
+ok: [machine2]
+
+TASK [kubeadm_install : Ensure net configs are in file] ************************
+changed: [machine1] => (item=net.bridge.bridge-nf-call-ip6tables = 1)
+changed: [machine2] => (item=net.bridge.bridge-nf-call-ip6tables = 1)
+changed: [machine3] => (item=net.bridge.bridge-nf-call-ip6tables = 1)
+changed: [machine1] => (item=net.bridge.bridge-nf-call-iptables  = 1)
+changed: [machine2] => (item=net.bridge.bridge-nf-call-iptables  = 1)
+changed: [machine3] => (item=net.bridge.bridge-nf-call-iptables  = 1)
+changed: [machine1] => (item=net.ipv4.ip_forward                 = 1)
+changed: [machine2] => (item=net.ipv4.ip_forward                 = 1)
+changed: [machine3] => (item=net.ipv4.ip_forward                 = 1)
+
+TASK [kubeadm_install : Install containerd] ************************************
+included: /home/rocha/Documents/projects/pessoal/hashicorp/vagrant/kubeadm_cluster/provisioning/roles/kubeadm_install/tasks/containerd_install.yml for machine1, machine2, machine3
+
+TASK [kubeadm_install : Create conf directory] *********************************
+changed: [machine1]
+changed: [machine3]
+changed: [machine2]
+
+TASK [kubeadm_install : ansible.builtin.file] **********************************
+fatal: [machine3]: FAILED! => {"changed": false, "msg": "file (/etc/modules-load.d/containerd.conf) is absent, cannot continue", "path": "/etc/modules-load.d/containerd.conf", "state": "absent"}
+fatal: [machine2]: FAILED! => {"changed": false, "msg": "file (/etc/modules-load.d/containerd.conf) is absent, cannot continue", "path": "/etc/modules-load.d/containerd.conf", "state": "absent"}
+fatal: [machine1]: FAILED! => {"changed": false, "msg": "file (/etc/modules-load.d/containerd.conf) is absent, cannot continue", "path": "/etc/modules-load.d/containerd.conf", "state": "absent"}
+
+TASK [kubeadm_install : ansible.builtin.file] **********************************
+changed: [machine3]
+changed: [machine2]
+changed: [machine1]
+
+TASK [kubeadm_install : Ensure modules loads are in file] **********************
+changed: [machine3] => (item=overlay)
+changed: [machine1] => (item=overlay)
+changed: [machine2] => (item=overlay)
+changed: [machine1] => (item=br_netfilter)
+changed: [machine3] => (item=br_netfilter)
+changed: [machine2] => (item=br_netfilter)
+
+TASK [kubeadm_install : Template for Networking Config] ************************
+changed: [machine2]
+changed: [machine1]
+changed: [machine3]
+
+TASK [kubeadm_install : Get Containerd] ****************************************
+skipping: [machine1]
+skipping: [machine2]
+skipping: [machine3]
+
+TASK [kubeadm_install : Uncompress test] ***************************************
+skipping: [machine1]
+skipping: [machine2]
+skipping: [machine3]
+
+TASK [kubeadm_install : Template for Containerd Service] ***********************
+skipping: [machine1]
+skipping: [machine2]
+skipping: [machine3]
+
+TASK [kubeadm_install : Containerd Service Enable] *****************************
+skipping: [machine1]
+skipping: [machine2]
+skipping: [machine3]
+
+TASK [kubeadm_install : Install Containerd] ************************************
+changed: [machine1]
+changed: [machine2]
+changed: [machine3]
+
+TASK [kubeadm_install : ansible.builtin.file] **********************************
+fatal: [machine1]: FAILED! => {"changed": false, "msg": "file (/etc/containerd/config.toml) is absent, cannot continue", "path": "/etc/containerd/config.toml", "state": "absent"}
+fatal: [machine2]: FAILED! => {"changed": false, "msg": "file (/etc/containerd/config.toml) is absent, cannot continue", "path": "/etc/containerd/config.toml", "state": "absent"}
+fatal: [machine3]: FAILED! => {"changed": false, "msg": "file (/etc/containerd/config.toml) is absent, cannot continue", "path": "/etc/containerd/config.toml", "state": "absent"}
+
+TASK [kubeadm_install : shell] *************************************************
+changed: [machine1]
+changed: [machine3]
+changed: [machine2]
+
+TASK [kubeadm_install : Install CNI and CRI] ***********************************
+skipping: [machine1]
+skipping: [machine2]
+skipping: [machine3]
+
+TASK [kubeadm_install : Install kubeadm] ***************************************
+included: /home/rocha/Documents/projects/pessoal/hashicorp/vagrant/kubeadm_cluster/provisioning/roles/kubeadm_install/tasks/kubeadm_install.yml for machine1, machine2, machine3
+
+TASK [kubeadm_install : Connect to website using a previously stored cookie] ***
+skipping: [machine1]
+skipping: [machine2]
+skipping: [machine3]
+
+TASK [kubeadm_install : K8s Version] *******************************************
+skipping: [machine1]
+skipping: [machine2]
+skipping: [machine3]
+
+TASK [kubeadm_install : Get Kube -> adm, let and ctl] **************************
+skipping: [machine1] => (item=kubeadm) 
+skipping: [machine1] => (item=kubelet) 
+skipping: [machine1] => (item=kubectl) 
+skipping: [machine2] => (item=kubeadm) 
+skipping: [machine2] => (item=kubelet) 
+skipping: [machine2] => (item=kubectl) 
+skipping: [machine3] => (item=kubeadm) 
+skipping: [machine3] => (item=kubelet) 
+skipping: [machine3] => (item=kubectl) 
+
+TASK [kubeadm_install : Create Kubeadm Conf directory] *************************
+skipping: [machine1]
+skipping: [machine2]
+skipping: [machine3]
+
+TASK [kubeadm_install : Get Kube -> adm, let and ctl] **************************
+skipping: [machine1]
+skipping: [machine2]
+skipping: [machine3]
+
+TASK [kubeadm_install : Connect to website using a previously stored cookie] ***
+skipping: [machine1]
+skipping: [machine2]
+skipping: [machine3]
+
+TASK [kubeadm_install : Add keys k8s] ******************************************
+changed: [machine3]
+changed: [machine2]
+changed: [machine1]
+
+TASK [kubeadm_install : Install k8s Modules] ***********************************
+changed: [machine1]
+changed: [machine3]
+changed: [machine2]
+
+TASK [kubeadm_install : Install k8s packages] **********************************
+changed: [machine3]
+changed: [machine1]
+changed: [machine2]
+
+RUNNING HANDLER [ubuntu_update : restart ntp] **********************************
+changed: [machine1]
+changed: [machine2]
+changed: [machine3]
+
+PLAY [master_nodes] ************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [machine1]
+
+TASK [ubuntu_update : Set a hostname] ******************************************
+skipping: [machine1]
+
+TASK [ubuntu_update : Register current User] ***********************************
+ok: [machine1]
+
+TASK [ubuntu_update : Current User] ********************************************
+ok: [machine1] => {
+    "msg": "vagrant"
+}
+
+TASK [ubuntu_update : Install packages] ****************************************
+ok: [machine1]
+
+TASK [ubuntu_update : Installed packages] **************************************
+ok: [machine1] => {
+    "msg": [
+        "apt-transport-https",
+        "ca-certificates",
+        "curl",
+        "gnupg-agent",
+        "software-properties-common",
+        "wget",
+        "conntrack",
+        "selinux-utils",
+        "htop"
+    ]
+}
+
+TASK [ubuntu_update : Install Python3] *****************************************
+ok: [machine1]
+
+TASK [ubuntu_update : Installed Python packages] *******************************
+ok: [machine1] => {
+    "msg": [
+        "python3-pip",
+        "python3-setuptools",
+        "virtualenv"
+    ]
+}
+
+TASK [ubuntu_update : Install/upgrade Pip Packages] ****************************
+ok: [machine1]
+
+TASK [ubuntu_update : Installed Pip packages] **********************************
+ok: [machine1] => {
+    "msg": [
+        "pip",
+        "anisble"
+    ]
+}
+
+TASK [ubuntu_update : Ensure ntpd is at the latest version] ********************
+ok: [machine1]
+
+TASK [ubuntu_update : Upgrade the OS (apt-get full-upgrade)] *******************
+ok: [machine1]
+
+TASK [ubuntu_update : Set authorized key taken from file] **********************
+ok: [machine1]
+
+TASK [kubeadm_install : Install Kernel Modules] ********************************
+included: /home/rocha/Documents/projects/pessoal/hashicorp/vagrant/kubeadm_cluster/provisioning/roles/kubeadm_install/tasks/modprobe_config.yml for machine1
+
+TASK [kubeadm_install : Add the kernel modules] ********************************
+ok: [machine1] => (item=overlay)
+ok: [machine1] => (item=br_netfilter)
+
+TASK [kubeadm_install : Create file module conf] *******************************
+ok: [machine1]
+
+TASK [kubeadm_install : Ensure modules loads are in file] **********************
+ok: [machine1] => (item=overlay)
+ok: [machine1] => (item=br_netfilter)
+
+TASK [kubeadm_install : Create file sysctl.d config] ***************************
+ok: [machine1]
+
+TASK [kubeadm_install : Ensure net configs are in file] ************************
+ok: [machine1] => (item=net.bridge.bridge-nf-call-ip6tables = 1)
+ok: [machine1] => (item=net.bridge.bridge-nf-call-iptables  = 1)
+ok: [machine1] => (item=net.ipv4.ip_forward                 = 1)
+
+TASK [kubeadm_install : Install containerd] ************************************
+included: /home/rocha/Documents/projects/pessoal/hashicorp/vagrant/kubeadm_cluster/provisioning/roles/kubeadm_install/tasks/containerd_install.yml for machine1
+
+TASK [kubeadm_install : Create conf directory] *********************************
+ok: [machine1]
+
+TASK [kubeadm_install : ansible.builtin.file] **********************************
+ok: [machine1]
+
+TASK [kubeadm_install : Ensure modules loads are in file] **********************
+ok: [machine1] => (item=overlay)
+ok: [machine1] => (item=br_netfilter)
+
+TASK [kubeadm_install : Template for Networking Config] ************************
+ok: [machine1]
+
+TASK [kubeadm_install : Get Containerd] ****************************************
+skipping: [machine1]
+
+TASK [kubeadm_install : Uncompress test] ***************************************
+skipping: [machine1]
+
+TASK [kubeadm_install : Template for Containerd Service] ***********************
+skipping: [machine1]
+
+TASK [kubeadm_install : Containerd Service Enable] *****************************
+skipping: [machine1]
+
+TASK [kubeadm_install : Install Containerd] ************************************
+ok: [machine1]
+
+TASK [kubeadm_install : ansible.builtin.file] **********************************
+ok: [machine1]
+
+TASK [kubeadm_install : Install CNI and CRI] ***********************************
+skipping: [machine1]
+
+TASK [kubeadm_install : Install kubeadm] ***************************************
+included: /home/rocha/Documents/projects/pessoal/hashicorp/vagrant/kubeadm_cluster/provisioning/roles/kubeadm_install/tasks/kubeadm_install.yml for machine1
+
+TASK [kubeadm_install : Connect to website using a previously stored cookie] ***
+skipping: [machine1]
+
+TASK [kubeadm_install : K8s Version] *******************************************
+skipping: [machine1]
+
+TASK [kubeadm_install : Get Kube -> adm, let and ctl] **************************
+skipping: [machine1] => (item=kubeadm) 
+skipping: [machine1] => (item=kubelet) 
+skipping: [machine1] => (item=kubectl) 
+
+TASK [kubeadm_install : Create Kubeadm Conf directory] *************************
+skipping: [machine1]
+
+TASK [kubeadm_install : Get Kube -> adm, let and ctl] **************************
+skipping: [machine1]
+
+TASK [kubeadm_install : Connect to website using a previously stored cookie] ***
+skipping: [machine1]
+
+TASK [kubeadm_install : Add keys k8s] ******************************************
+ok: [machine1]
+
+TASK [kubeadm_install : Install k8s Modules] ***********************************
+ok: [machine1]
+
+TASK [kubeadm_install : Install k8s packages] **********************************
+ok: [machine1]
+
+TASK [kubeadm_setup : Register user] *******************************************
+changed: [machine1]
+
+TASK [kubeadm_setup : Reboot host and wait for it to restart] ******************
+changed: [machine1]
+
+TASK [kubeadm_setup : Ensures swapoff] *****************************************
+ok: [machine1]
+
+TASK [kubeadm_setup : Ensures Systemctl] ***************************************
+ok: [machine1]
+
+TASK [kubeadm_setup : Pull initial images] *************************************
+ok: [machine1]
+
+TASK [kubeadm_setup : Check if cluster is created] *****************************
+fatal: [machine1]: FAILED! => {"changed": false, "msg": "file (/etc/kubernetes/manifests/kube-apiserver.yaml) is absent, cannot continue", "path": "/etc/kubernetes/manifests/kube-apiserver.yaml", "state": "absent"}
+
+TASK [kubeadm_setup : Cluster initialize] **************************************
+changed: [machine1]
+
+TASK [kubeadm_setup : Init Cluster] ********************************************
+ok: [machine1] => {
+    "msg": "[init] Using Kubernetes version: v1.21.0\n[preflight] Running pre-flight checks\n[preflight] Pulling images required for setting up a Kubernetes cluster\n[preflight] This might take a minute or two, depending on the speed of your internet connection\n[preflight] You can also perform this action in beforehand using 'kubeadm config images pull'\n[certs] Using certificateDir folder \"/etc/kubernetes/pki\"\n[certs] Generating \"ca\" certificate and key\n[certs] Generating \"apiserver\" certificate and key\n[certs] apiserver serving cert is signed for DNS names [kubernetes kubernetes.default kubernetes.default.svc kubernetes.default.svc.cluster.local machine1] and IPs [10.96.0.1 10.0.2.15 192.168.15.50]\n[certs] Generating \"apiserver-kubelet-client\" certificate and key\n[certs] Generating \"front-proxy-ca\" certificate and key\n[certs] Generating \"front-proxy-client\" certificate and key\n[certs] Generating \"etcd/ca\" certificate and key\n[certs] Generating \"etcd/server\" certificate and key\n[certs] etcd/server serving cert is signed for DNS names [localhost machine1] and IPs [10.0.2.15 127.0.0.1 ::1]\n[certs] Generating \"etcd/peer\" certificate and key\n[certs] etcd/peer serving cert is signed for DNS names [localhost machine1] and IPs [10.0.2.15 127.0.0.1 ::1]\n[certs] Generating \"etcd/healthcheck-client\" certificate and key\n[certs] Generating \"apiserver-etcd-client\" certificate and key\n[certs] Generating \"sa\" key and public key\n[kubeconfig] Using kubeconfig folder \"/etc/kubernetes\"\n[kubeconfig] Writing \"admin.conf\" kubeconfig file\n[kubeconfig] Writing \"kubelet.conf\" kubeconfig file\n[kubeconfig] Writing \"controller-manager.conf\" kubeconfig file\n[kubeconfig] Writing \"scheduler.conf\" kubeconfig file\n[kubelet-start] Writing kubelet environment file with flags to file \"/var/lib/kubelet/kubeadm-flags.env\"\n[kubelet-start] Writing kubelet configuration to file \"/var/lib/kubelet/config.yaml\"\n[kubelet-start] Starting the kubelet\n[control-plane] Using manifest folder \"/etc/kubernetes/manifests\"\n[control-plane] Creating static Pod manifest for \"kube-apiserver\"\n[control-plane] Creating static Pod manifest for \"kube-controller-manager\"\n[control-plane] Creating static Pod manifest for \"kube-scheduler\"\n[etcd] Creating static Pod manifest for local etcd in \"/etc/kubernetes/manifests\"\n[wait-control-plane] Waiting for the kubelet to boot up the control plane as static Pods from directory \"/etc/kubernetes/manifests\". This can take up to 4m0s\n[kubelet-check] Initial timeout of 40s passed.\n[apiclient] All control plane components are healthy after 89.589993 seconds\n[upload-config] Storing the configuration used in ConfigMap \"kubeadm-config\" in the \"kube-system\" Namespace\n[kubelet] Creating a ConfigMap \"kubelet-config-1.21\" in namespace kube-system with the configuration for the kubelets in the cluster\n[upload-certs] Storing the certificates in Secret \"kubeadm-certs\" in the \"kube-system\" Namespace\n[upload-certs] Using certificate key:\nd41376fbc8ea2a327676c2fbcd3a79ccb2019bc3b151d79944b4052a20ea25cc\n[mark-control-plane] Marking the node machine1 as control-plane by adding the labels: [node-role.kubernetes.io/master(deprecated) node-role.kubernetes.io/control-plane node.kubernetes.io/exclude-from-external-load-balancers]\n[mark-control-plane] Marking the node machine1 as control-plane by adding the taints [node-role.kubernetes.io/master:NoSchedule]\n[bootstrap-token] Using token: n2fjl9.se6mk2pd61f0gzjb\n[bootstrap-token] Configuring bootstrap tokens, cluster-info ConfigMap, RBAC Roles\n[bootstrap-token] configured RBAC rules to allow Node Bootstrap tokens to get nodes\n[bootstrap-token] configured RBAC rules to allow Node Bootstrap tokens to post CSRs in order for nodes to get long term certificate credentials\n[bootstrap-token] configured RBAC rules to allow the csrapprover controller automatically approve CSRs from a Node Bootstrap Token\n[bootstrap-token] configured RBAC rules to allow certificate rotation for all node client certificates in the cluster\n[bootstrap-token] Creating the \"cluster-info\" ConfigMap in the \"kube-public\" namespace\n[kubelet-finalize] Updating \"/etc/kubernetes/kubelet.conf\" to point to a rotatable kubelet client certificate and key\n[addons] Applied essential addon: CoreDNS\n[addons] Applied essential addon: kube-proxy\n\nYour Kubernetes control-plane has initialized successfully!\n\nTo start using your cluster, you need to run the following as a regular user:\n\n  mkdir -p $HOME/.kube\n  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config\n  sudo chown $(id -u):$(id -g) $HOME/.kube/config\n\nAlternatively, if you are the root user, you can run:\n\n  export KUBECONFIG=/etc/kubernetes/admin.conf\n\nYou should now deploy a pod network to the cluster.\nRun \"kubectl apply -f [podnetwork].yaml\" with one of the options listed at:\n  https://kubernetes.io/docs/concepts/cluster-administration/addons/\n\nYou can now join any number of the control-plane node running the following command on each as root:\n\n  kubeadm join 192.168.15.50:6443 --token n2fjl9.se6mk2pd61f0gzjb \\\n\t--discovery-token-ca-cert-hash sha256:14cfe83be1f1c29c9774cb968345ce8a8a27671ed7fe1619b18d24232a7889d7 \\\n\t--control-plane --certificate-key d41376fbc8ea2a327676c2fbcd3a79ccb2019bc3b151d79944b4052a20ea25cc\n\nPlease note that the certificate-key gives access to cluster sensitive data, keep it secret!\nAs a safeguard, uploaded-certs will be deleted in two hours; If necessary, you can use\n\"kubeadm init phase upload-certs --upload-certs\" to reload certs afterward.\n\nThen you can join any number of worker nodes by running the following on each as root:\n\nkubeadm join 192.168.15.50:6443 --token n2fjl9.se6mk2pd61f0gzjb \\\n\t--discovery-token-ca-cert-hash sha256:14cfe83be1f1c29c9774cb968345ce8a8a27671ed7fe1619b18d24232a7889d7 "
+}
+
+TASK [kubeadm_setup : Kubectl version] *****************************************
+changed: [machine1]
+
+TASK [kubeadm_setup : Get Pod Networks Configuration] **************************
+changed: [machine1]
+
+TASK [kubeadm_setup : Install Pod network] *************************************
+fatal: [machine1]: FAILED! => {"changed": true, "cmd": "kubectl apply -f /tmp/weave.yml", "delta": "0:00:00.306345", "end": "2021-04-15 02:58:22.034760", "msg": "non-zero return code", "rc": 1, "start": "2021-04-15 02:58:21.728415", "stderr": "The connection to the server localhost:8080 was refused - did you specify the right host or port?", "stderr_lines": ["The connection to the server localhost:8080 was refused - did you specify the right host or port?"], "stdout": "", "stdout_lines": []}
+
+TASK [kubeadm_setup : Check admin.conf file exists.] ***************************
+ok: [machine1]
+
+TASK [kubeadm_setup : Check config.yaml file exists.] **************************
+ok: [machine1]
+
+PLAY RECAP *********************************************************************
+machine1                   : ok=70   changed=24   unreachable=0    failed=1    skipped=24   rescued=3    ignored=0   
+machine2                   : ok=30   changed=19   unreachable=0    failed=0    skipped=12   rescued=2    ignored=0   
+machine3                   : ok=30   changed=19   unreachable=0    failed=0    skipped=12   rescued=2    ignored=0   
+

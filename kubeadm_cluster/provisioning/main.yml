@@ -1,67 +1,60 @@
 ---
 - hosts: all
   become: yes
+  vars:
+    hostname:
+      enabled: False
   roles:
   - kubeadm_install
 
-# - hosts: master_nodes
-#   become: yes
-#   gather_facts: false
-#   vars: 
-#     join_token: teste
-#   tasks:
-#     - name: Get token join master
-#       shell: microk8s add-node -l 600 | grep 192 | cut -d' ' -f 4
-#       register: join_token 
+- hosts: master_nodes
+  become: yes
+  vars:
+    hostname:
+      enabled: False
+  roles:
+  - kubeadm_setup
+  tasks:
+  - name: Register IP
+    shell: "echo {{ ansible_default_ipv4.address }}"
+    register: K8S_MASTER_NODE_IP
 
-#     - name: Set token
-#       set_fact:
-#         join_token: "{{ join_token.stdout }}"
-#         cacheable: yes
 
-#     - name: Token
-#       debug: 
-#         var: join_token
+- hosts:
+  - join_masters
+  - workers
+  become: yes
+  gather_facts: false
+  tasks:
+    - name: Reboot host and wait for it to restart
+      reboot:
+        msg: "Reboot initiated by Ansible"
+        connect_timeout: 5
+        reboot_timeout: 600
+        pre_reboot_delay: 0
+        post_reboot_delay: 30
+        test_command: whoami
+        
+    - name: Turnoff swapp
+      shell: swapoff -a
 
-#     - name: Register dummy host with variable   
-#       add_host:
-#         name: "master_nodes"
-#         join_token: "{{ join_token }}"
 
-#     - name: Cat config
-#       shell: microk8s config
-#       register: config
-    
-#     - name: Config
-#       local_action: 
-#         module: copy 
-#         content: "{{config.stdout}}" 
-#         dest: file
+- hosts: join_masters
+  become: yes
+  gather_facts: false
+  tasks:
+    - name: "Kubeadm join"
+      shell: |
+        kubeadm join --token={{ hostvars['K8S_TOKEN_HOLDER']['token'] }} \
+          --discovery-token-ca-cert-hash sha256:{{ hostvars['K8S_TOKEN_HOLDER']['hash'] }} \
+          192.168.15.50:6443 --control-plane --certificate-key {{ hostvars['K8S_TOKEN_HOLDER']['certkey'] }}
 
-# - hosts: join_masters
-#   become: yes
-#   gather_facts: false
-#   tasks:
-#     - name: Joining to the Cluster
-#       debug:
-#         var: hostvars['master_nodes']
 
-#     - name: Join to Cluster
-#       shell: "microk8s join {{ hostvars['master_nodes']['join_token'] }}"
-#       when: hostvars['master_nodes']['join_token'] is defined
-
-# - hosts: masters
-#   become: yes
-#   gather_facts: false
-#   tasks:
-#   - name: Ensure the IP from LB is acceptble 
-#     ansible.builtin.lineinfile:
-#       path: /var/snap/microk8s/current/certs/csr.conf.template
-#       regexp: '^IP.100 = '
-#       insertafter: '^IP.2 '
-#       line: IP.100 = 192.168.15.50
-
-# - hosts: mac1
-#   become: yes
-#   roles:
-#     - microk8s_modules
+- hosts: workers
+  become: yes
+  tasks:
+  - name: "Kubeadm join"
+    shell: |
+      kubeadm join --token={{ hostvars['K8S_TOKEN_HOLDER']['token'] }} \
+        --discovery-token-ca-cert-hash sha256:{{ hostvars['K8S_TOKEN_HOLDER']['hash'] }} \
+        192.168.15.50:6443
