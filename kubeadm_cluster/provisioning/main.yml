@@ -145,13 +145,11 @@
         kubeadm join  phase control-plane-join all --control-plane
 
 
-
-#{{ ansible_facts['eth1']['ipv4']['address'] }} --v=5
-# - hosts: workers
-#   become: yes
-#   tasks:
-#   - name: "Kubeadm join"
-#     shell: |
-#       kubeadm join --token={{ hostvars['K8S_TOKEN_HOLDER']['token'] }} \
-#         --discovery-token-ca-cert-hash sha256:{{ hostvars['K8S_TOKEN_HOLDER']['hash'] }} \
-#         192.168.15.50:6443
+- hosts: workers
+  become: yes
+  tasks:
+  - name: "Kubeadm join"
+    shell: |
+      kubeadm join --token={{ hostvars['K8S_TOKEN_HOLDER']['token'] }} \
+        --discovery-token-ca-cert-hash sha256:{{ hostvars['K8S_TOKEN_HOLDER']['hash'] }} \
+        192.168.15.50:6443
