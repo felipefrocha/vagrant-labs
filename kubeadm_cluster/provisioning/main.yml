@@ -6,8 +6,39 @@
       enabled: False
   roles:
   - kubeadm_install
+  tasks:
+    - name: Edit Routes
+      shell: |
+        apt install -y net-tools
+        cat>/usr/bin/startup<<EOF
+        #!/bin/bash
+        route add default gw 192.168.15.1
+        $(route -n | awk '{ if ($8 =="eth0" && $2 != "0.0.0.0") print "route del default gw " $2; }')
+        swapoff -a
+        EOF
+        chmod +x /usr/bin/startup
+        cat>/etc/systemd/system/vagrantr.service<<EOF
+        [Unit]
+        Description=Route Vagrant systemd service.
+        After=network.target
 
-- hosts: master_nodes
+        [Service]
+        Type=simple
+        ExecStart=/usr/bin/startup
+
+        [Install]
+        WantedBy=multi-user.target
+        EOF
+        chmod 644 /etc/systemd/system/vagrantr.service
+
+    - name: Ensure service
+      systemd:
+        name: vagrantr
+        enabled: yes
+        state: started
+
+
+- hosts: master_node
   become: yes
   vars:
     hostname:
@@ -18,7 +49,6 @@
   - name: Register IP
     shell: "echo {{ ansible_default_ipv4.address }}"
     register: K8S_MASTER_NODE_IP
-
 
 - hosts:
   - join_masters
@@ -39,22 +69,89 @@
       shell: swapoff -a
 
 
-- hosts: join_masters
+- hosts: machine2
   become: yes
-  gather_facts: false
+  gather_facts: True
   tasks:
-    - name: "Kubeadm join"
+    - name: Register ip
+      debug:
+        msg: "{{ ansible_facts['eth1']['ipv4']['address'] }}"
+
+    - name: "Kubeadm join prepare phase"
       shell: |
-        kubeadm join --token={{ hostvars['K8S_TOKEN_HOLDER']['token'] }} \
+        kubeadm join  phase control-plane-prepare all  --token={{ hostvars['K8S_TOKEN_HOLDER']['token'] }} \
           --discovery-token-ca-cert-hash sha256:{{ hostvars['K8S_TOKEN_HOLDER']['hash'] }} \
-          192.168.15.50:6443 --control-plane --certificate-key {{ hostvars['K8S_TOKEN_HOLDER']['certkey'] }}
+          192.168.15.50:6443 --control-plane --certificate-key {{ hostvars['K8S_TOKEN_HOLDER']['certkey'] }} --v=5
 
+    - name: "Kubeadm join kubelet phase"
+      shell: |
+        kubeadm join  phase kubelet-start  --token={{ hostvars['K8S_TOKEN_HOLDER']['token'] }} \
+          --discovery-token-ca-cert-hash sha256:{{ hostvars['K8S_TOKEN_HOLDER']['hash'] }} \
+          192.168.15.50:6443 --v=5
 
-- hosts: workers
+- hosts: master_node
   become: yes
   tasks:
-  - name: "Kubeadm join"
-    shell: |
-      kubeadm join --token={{ hostvars['K8S_TOKEN_HOLDER']['token'] }} \
-        --discovery-token-ca-cert-hash sha256:{{ hostvars['K8S_TOKEN_HOLDER']['hash'] }} \
-        192.168.15.50:6443
+    - name: Kubernetes wait readness
+      shell: |
+        [ $(kubectl get no | grep ' Ready' | wc -l) = 2 ]
+      retries: 5
+      delay: 60
+      register: result
+
+- hosts: machine2
+  become: yes
+  gather_facts: False
+  tasks:
+    - name: "Kubeadm join prepare phase"
+      shell: |
+        kubeadm join  phase control-plane-join all --control-plane
+
+- hosts: machine3
+  become: yes
+  gather_facts: True
+  tasks:
+    - name: Register ip
+      debug:
+        msg: "{{ ansible_facts['eth1']['ipv4']['address'] }}"
+
+    - name: "Kubeadm join prepare phase"
+      shell: |
+        kubeadm join  phase control-plane-prepare all  --token={{ hostvars['K8S_TOKEN_HOLDER']['token'] }} \
+          --discovery-token-ca-cert-hash sha256:{{ hostvars['K8S_TOKEN_HOLDER']['hash'] }} \
+          192.168.15.50:6443 --control-plane --certificate-key {{ hostvars['K8S_TOKEN_HOLDER']['certkey'] }} --v=5
+
+    - name: "Kubeadm join kubelet phase"
+      shell: |
+        kubeadm join  phase kubelet-start  --token={{ hostvars['K8S_TOKEN_HOLDER']['token'] }} \
+          --discovery-token-ca-cert-hash sha256:{{ hostvars['K8S_TOKEN_HOLDER']['hash'] }} \
+          192.168.15.50:6443 --v=5
+        
+- hosts: master_node
+  become: yes
+  tasks: 
+    - name: Kubernetes wait readness
+      shell: |
+        [ $(kubectl get no | grep ' Ready' | wc -l) = 2 ]
+      retries: 5
+      delay: 60
+      register: result
+
+- hosts: machine3
+  become: yes
+  tasks:
+    - name: "Kubeadm join prepare phase"
+      shell: |
+        kubeadm join  phase control-plane-join all --control-plane
+
+
+
+#{{ ansible_facts['eth1']['ipv4']['address'] }} --v=5
+# - hosts: workers
+#   become: yes
+#   tasks:
+#   - name: "Kubeadm join"
+#     shell: |
+#       kubeadm join --token={{ hostvars['K8S_TOKEN_HOLDER']['token'] }} \
+#         --discovery-token-ca-cert-hash sha256:{{ hostvars['K8S_TOKEN_HOLDER']['hash'] }} \
+#         192.168.15.50:6443

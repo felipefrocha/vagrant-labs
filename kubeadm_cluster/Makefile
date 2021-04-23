@@ -8,6 +8,8 @@ WHALE = "🇩"
 ONI = "👹"
 PHONY=help
 
+all: clear docker_lb vagrant
+
 setup: ## Install all requirements for your system
 	@echo Installing packages
 	@sudo apt-get update && \
@@ -36,7 +38,7 @@ vagrant: ansible_roles ## Create and provision all vagrant VMs
 
 
 docker_lb: ## Ups a load_balancer for the others
-	@docker-compose -f nginx/docker-compose.yml up --build -d
+	@docker-compose -f haproxy/docker-compose.yml down --rmi all && docker-compose -f haproxy/docker-compose.yml up --build -d
 
 
 vendor: ## vendor

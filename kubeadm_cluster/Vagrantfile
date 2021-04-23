@@ -2,6 +2,44 @@ Vagrant.configure("2") do |config|
   # config.vm.box         = "hashicorp/bionic64"
   config.vm.box         = "generic/ubuntu2004"
   config.vm.box_check_update = true
+
+  # Load balancer for this implementation
+  #  config.vm.define "loadbalancer" do |lb|
+  #   lb.vm.hostname = "loadbalancer"
+  #   lb.vm.network "public_network", ip: "192.168.15.70", bridge: "enp1s0"
+    
+  #   # Define lb size
+  #   lb.vm.provider "virtualbox" do |vb|
+  #       vb.memory = "512"
+  #       vb.cpus = 1
+  #       vb.customize ["modifyvm", :id, "--cpuexecutioncap", "10"]
+  #   end
+  #   # Point Local hostname to eth1
+  #   lb.vm.provision :shell, 
+  #     inline: "sudo apt update && sudo apt install -y net-tools"
+  #   # Point Local hostname to eth1
+  #   lb.vm.provision :shell, 
+  #     inline: "sed 's/127\.0\.0\.1.*loadbalancer.*/192.168.15.70 loadbalancer/' -i /etc/hosts"
+    
+  #   # default router
+  #   lb.vm.provision "shell",
+  #     run: "always",
+  #     inline: "route add default gw 192.168.15.1"
+
+  #   # delete default gw on eth0
+  #   lb.vm.provision "shell",
+  #     run: "always",
+  #     inline: "eval `route -n | awk '{ if ($8 ==\"eth0\" && $2 != \"0.0.0.0\") print \"route del default gw \" $2; }'`"
+  #   # Define service
+  #   lb.vm.provision "shell",
+  #     inline: "sudo apt update && sudo apt install -y curl wget && curl -fsSL https://get.docker.com | sudo bash - && sudo usermod -aG docker $USER"
+  #   lb.vm.provision "shell",
+  #     inline: "sudo curl -L 'https://github.com/docker/compose/releases/download/1.29.1/docker-compose-$(uname -s)-$(uname -m)' -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose"
+  #   # Define service
+  #   lb.vm.provision "file", source: "./nginx", destination: "~/nginx"
+  #  end
+
+  
   N=3
   (1..N).each do |machine_id|
     config.vm.define "machine#{machine_id}" do |machine|
@@ -12,27 +50,23 @@ Vagrant.configure("2") do |config|
         vb.memory = "2048"
         vb.cpus = 2
         vb.customize ["modifyvm", :id, "--cpuexecutioncap", "#{100/N}"]
-      end
-      
-
+      end 
+        
       # Only execute once the Ansible provisioner,
       # when all the machines are up and ready.
       if machine_id == N
-      #   machine.vm.provision "ansible_local" do |ansible_local|
-      #   ansible_local.playbook = "provisioning/main.yml"
-      #   ansible_local.galaxy_role_file = "provisioning/requirements.yml"
-      #   ansible_local.galaxy_roles_path = "provisioning/roles/"
-      #   ansible_local.galaxy_command = "ansible-galaxy install --role-file=%{role_file} --roles-path=%{roles_path} --force"
-      # end
         machine.vm.provision :ansible do |ansible|
           # Disable default limit to connect to all the machines
           ansible.limit = "all"
           ansible.playbook = "provisioning/main.yml"
+          ansible.verbose = true
+          # ansible.galaxy_role_file = "provisioning/requirements.yml"
+          # ansible.galaxy_roles_path = "provisioning/roles/"
           ansible.groups = {
             "masters" => [],
             "masters:children" => ["mac1","mac2","mac3"],
-            "master_nodes" => [],
-            "master_nodes:children" => ["mac1"],
+            "master_node" => [],
+            "master_node:children" => ["mac1"],
             "join_masters" => [],
             "join_masters:children" => ["mac2","mac3"],
             "workers" => [],
