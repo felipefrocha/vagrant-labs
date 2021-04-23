@@ -83,11 +83,11 @@
           --discovery-token-ca-cert-hash sha256:{{ hostvars['K8S_TOKEN_HOLDER']['hash'] }} \
           192.168.15.50:6443 --control-plane --certificate-key {{ hostvars['K8S_TOKEN_HOLDER']['certkey'] }} --v=5
 
-    # - name: "Kubeadm join kubelet phase"
-    #   shell: |
-    #     kubeadm join  phase kubelet-start  --token={{ hostvars['K8S_TOKEN_HOLDER']['token'] }} \
-    #       --discovery-token-ca-cert-hash sha256:{{ hostvars['K8S_TOKEN_HOLDER']['hash'] }} \
-    #       192.168.15.50:6443 --v=5
+    - name: "Kubeadm join kubelet phase"
+      shell: |
+        kubeadm join  phase kubelet-start  --token={{ hostvars['K8S_TOKEN_HOLDER']['token'] }} \
+          --discovery-token-ca-cert-hash sha256:{{ hostvars['K8S_TOKEN_HOLDER']['hash'] }} \
+          192.168.15.50:6443 --v=5
 
 - hosts: master_node
   become: yes
